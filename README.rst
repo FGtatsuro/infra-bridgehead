@@ -8,8 +8,8 @@ This project generates the base image for various infrastructures.
 It is mainly used for infrastructure testing on CI.
 The contents it includes are  as follows.
 
-- Python(2.7.x) (For Ansible)
-- Ruby(2.x) (For Serverspec)
+- Python(>= 2.7.9) (For Ansible)
+- Ruby(>= 2.0) (For Serverspec)
 
 Requirements
 ------------

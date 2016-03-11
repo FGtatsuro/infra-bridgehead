@@ -1,29 +1,16 @@
 require "spec_helper_#{ENV['SPEC_TARGET_BACKEND']}"
 
-describe command('which python') do
-  its(:exit_status) { should eq 0 }
+# This psec is required by Ansible docker connection plugin.
+describe file('/usr/bin/python') do
+  it { should be_executable }
 end
 
-describe command('which VBoxManage') do
-  its(:exit_status) { should eq 0 }
+# Workaround: the result of `python --version` is sent to stderr.
+# Ref. https://bugs.python.org/issue18338
+describe command('python --version') do
+  its(:stderr) { should match /^Python 2\.7\.(9|1\d)/ }
 end
 
-describe command('which vagrant') do
-  its(:exit_status) { should eq 0 }
-end
-
-describe command('which packer') do
-  its(:exit_status) { should eq 0 }
-end
-
-describe command('which docker') do
-  its(:exit_status) { should eq 0 }
-end
-
-describe command('which docker-machine') do
-  its(:exit_status) { should eq 0 }
-end
-
-describe command('which docker-compose') do
-  its(:exit_status) { should eq 0 }
+describe command('ruby --version') do
+  its(:stdout) { should match /^ruby 2\./ }
 end
