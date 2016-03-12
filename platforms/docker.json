@@ -39,19 +39,22 @@
                         "staging_directory": "{{user `ansible_staging_directory`}}"
                 }
         ],
+        "_comment4": "Sequence action is presented as array in array.",
         "post-processors": [
-                {
-                        "type": "docker-tag",
-                        "repository": "fgtatsuro/infra-bridgehead",
-                        "tag": "debian-jessie",
-                        "force": true
-                },
-                {
-                        "type": "docker-push",
-                        "login": true,
-                        "login_email": "{{user `docker_email`}}",
-                        "login_username": "{{user `docker_username`}}",
-                        "login_password": "{{user `docker_password `}}"
-                }
+                [
+                        {
+                                "type": "docker-tag",
+                                "repository": "fgtatsuro/infra-bridgehead",
+                                "tag": "debian-jessie",
+                                "force": true
+                        },
+                        {
+                                "type": "docker-push",
+                                "login": true,
+                                "login_email": "{{user `docker_email`}}",
+                                "login_username": "{{user `docker_username`}}",
+                                "login_password": "{{user `docker_password`}}"
+                        }
+                ]
         ]
 }
