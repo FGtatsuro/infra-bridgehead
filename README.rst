@@ -35,6 +35,11 @@ How to
     $ ansible-galaxy install -r role_requirements.yml
     $ ansible-playbook playbooks/buildenv.yml -i inventory/default -l buildenv
 
+2. Build base image. And some platform images are also uploaded.
+
+.. code:: bash
+
+    $ packer build platforms/docker.json
 
 .. |Build Status| image:: https://travis-ci.org/FGtatsuro/infra-bridgehead.svg?branch=master
    :target: https://travis-ci.org/FGtatsuro/infra-bridgehead
