@@ -1,5 +1,6 @@
 |Build Status|
 
+==================================================
 infra-bridgehead
 ==================================================
 
@@ -11,17 +12,21 @@ The contents it includes are  as follows.
 - Python(>= 2.7.9) (For Ansible)
 - Ruby(>= 2.0) (For Serverspec)
 
+Supported image platforms are here.
+
+- Docker(Debian)
+
 Requirements
 ------------
 
 The dependencies on other softwares/librarys for this project.
 
-- Debian
+Supported build environments are here.
+
+- Ubuntu(>= 14.04)
     - Python (2.7.x)
-    - pip (>= 8.0.3)
-- OSX
+- OSX(>= 10.9.5)
     - Python (2.7.x)
-    - pip (>= 8.0.3)
     - Homebrew (>= 0.9.5)
 
 How to
