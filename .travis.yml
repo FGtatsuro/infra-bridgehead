@@ -18,7 +18,10 @@ matrix:
           packages:
           - python-pip
       script:
-        - ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost -vvvv
+        - >+
+          ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost
+          --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
+          -vvvv
         - bundle exec rake spec SPEC_TARGET=localhost
         - packer build platforms/docker.json
         - docker run -it -d --name container fgtatsuro/infra-bridgehead:debian-jessie /bin/bash
