@@ -35,11 +35,19 @@ How to
     $ ansible-galaxy install -r role_requirements.yml
     $ ansible-playbook playbooks/buildenv.yml -i inventory/default -l buildenv
 
-2. Build base image. And some platform images are also uploaded.
+2. Build base image.
 
 .. code:: bash
 
     $ packer build platforms/docker.json
+
+3. If you want to upload the image, you need to use the way for each image type.
+
+.. code:: bash
+
+    # Docker
+    $ docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    $ docker push fgtatsuro/infra-bridgehead:debian-jessie
 
 .. |Build Status| image:: https://travis-ci.org/FGtatsuro/infra-bridgehead.svg?branch=master
    :target: https://travis-ci.org/FGtatsuro/infra-bridgehead
