@@ -1,0 +1,63 @@
+{
+        "description": "The base image for various infrastructures",
+        "min_packer_version": "0.9.0",
+        "variables": {
+                "ansible_staging_directory": "/tmp/packer-provisioner-ansible-local"
+        },
+        "builders": [
+                {
+                        "type": "docker",
+                        "communicator": "docker",
+                        "image": "fgtatsuro/infra-bridgehead:debian-jessie",
+                        "commit": true,
+                        "pull": false
+                }
+        ],
+        "_comment1": "Docker builder with ansible-remote can't be used now. (Ref.)https://github.com/mitchellh/packer/issues/3331",
+        "_comment2": "Workaround for role update with glob. (Ref.)https://github.com/mitchellh/packer/issues/1000",
+        "_comment3": "/usr/bin/python must exists for Ansible provisioning.",
+        "provisioners": [
+                {
+                        "type": "shell",
+                        "inline": [
+                                "if [ -z \"`which gcc`\" ]; then apt-get update && apt-get install -y gcc; fi",
+                                "if [ -z \"`which ansible`\" ]; then pip install ansible; fi",
+                                "mkdir -p {{user `ansible_staging_directory`}}",
+                                "if [ ! -e /usr/bin/python -a -e /usr/local/bin/python ]; then /bin/ln -s /usr/local/bin/python /usr/bin/python; fi"
+                        ]
+                },
+                {
+                        "type": "file",
+                        "source": "roles",
+                        "destination": "{{user `ansible_staging_directory`}}"
+                },
+                {
+                        "type": "ansible-local",
+                        "playbook_file": "playbooks/base.yml",
+                        "extra_arguments": [
+                                "-vvvv"
+                        ],
+                        "staging_directory": "{{user `ansible_staging_directory`}}"
+                },
+                {
+                        "type": "shell",
+                        "inline": [
+                                "INSTALLED=`pip freeze`; if [ -n \"$INSTALLED\" ]; then echo \"$INSTALLED\" | xargs pip uninstall -y; fi",
+                                "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*",
+                                "rm -rf /root/.cache /var/lib/gems/2.1.0/cache/*",
+                                "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
+                        ]
+                }
+        ],
+        "_comment4": "Sequence action is presented as array in array.",
+        "post-processors": [
+                [
+                        {
+                                "type": "docker-tag",
+                                "repository": "fgtatsuro/infra-bridgehead",
+                                "tag": "debian-jessie",
+                                "force": true
+                        }
+                ]
+        ]
+}

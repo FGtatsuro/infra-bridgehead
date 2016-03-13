@@ -8,11 +8,13 @@ namespace :spec do
   hosts = [
     {
       :name     =>  'localhost',
+      :role     =>  'buildenv',
       :backend  =>  'exec'
     },
     {
       :name     =>  'container',
-      :backend  =>  'docker' 
+      :role     =>  'base',
+      :backend  =>  'docker'
     }
   ]
   if ENV['SPEC_TARGET'] then
@@ -28,7 +30,7 @@ namespace :spec do
     RSpec::Core::RakeTask.new(host[:name].to_sym) do |t|
       ENV['TARGET_HOST'] = host[:name]
       ENV['SPEC_TARGET_BACKEND'] = host[:backend]
-      t.pattern = "infra-bridgehead_spec.rb"
+      t.pattern = "infra-bridgehead_#{host[:role]}_spec.rb"
     end
   end
 end
