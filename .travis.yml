@@ -23,7 +23,7 @@ matrix:
           --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
           -vvvv
         - bundle exec rake spec SPEC_TARGET=localhost
-        - packer build platforms/docker.json
+        - packer build platforms/docker/debian.json
         - docker run -it -d --name container fgtatsuro/infra-bridgehead:debian-jessie /bin/bash
         - bundle exec rake spec SPEC_TARGET=container
       after_script:
