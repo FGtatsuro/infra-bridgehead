@@ -31,6 +31,30 @@ matrix:
       after_success:
         - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
         - docker push fgtatsuro/infra-bridgehead:debian-jessie
+    - os: linux
+      dist: trusty
+      language: python
+      python: 2.7
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+          - python-pip
+      script:
+        - >+
+          ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost
+          --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
+          -vvvv
+        - bundle exec rake spec SPEC_TARGET=localhost
+        - packer build platforms/docker/alpine.json
+        - docker run -it -d --name container fgtatsuro/infra-bridgehead:alpine-3.3 /bin/sh
+        - bundle exec rake spec SPEC_TARGET=container
+      after_script:
+        - docker rm -f container
+      after_success:
+        - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
+        - docker push fgtatsuro/infra-bridgehead:alpine-3.3
 
 sudo: required
 
