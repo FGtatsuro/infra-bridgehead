@@ -1,0 +1,65 @@
+{
+        "description": "The base image for various infrastructures",
+        "min_packer_version": "0.9.0",
+        "variables": {
+                "ansible_staging_directory": "/tmp/packer-provisioner-ansible-local"
+        },
+        "_comment1": "The image of Alpine Linux doesn't have /bin/bash.",
+        "builders": [
+                {
+                        "type": "docker",
+                        "communicator": "docker",
+                        "image": "alpine:3.3",
+                        "commit": true,
+                        "pull": true,
+                        "run_command": ["-d", "-i", "-t", "{{.Image}}", "/bin/sh"]
+                }
+        ],
+        "_comment2": "Docker builder with ansible-remote can't be used now. (Ref.)https://github.com/mitchellh/packer/issues/3331",
+        "_comment3": "Workaround for role update with glob. (Ref.)https://github.com/mitchellh/packer/issues/1000",
+        "_comment4": "/usr/bin/python must exists for Ansible provisioning.",
+        "provisioners": [
+                {
+                        "type": "shell",
+                        "inline": [
+                                "if [ -z \"`which python`\" ]; then apk update && apk add curl python-dev && curl -kL https://bootstrap.pypa.io/get-pip.py | python; fi",
+                                "if [ -z \"`which gcc`\" ]; then apk update && apk add gcc; fi",
+                                "if [ -z \"`which ansible`\" ]; then apk update && apk add musl-dev && pip install ansible; fi",
+                                "mkdir -p {{user `ansible_staging_directory`}}",
+                                "if [ ! -e /usr/bin/python -a -e /usr/local/bin/python ]; then /bin/ln -s /usr/local/bin/python /usr/bin/python; fi"
+                        ]
+                },
+                {
+                        "type": "file",
+                        "source": "roles",
+                        "destination": "{{user `ansible_staging_directory`}}"
+                },
+                {
+                        "type": "ansible-local",
+                        "playbook_file": "playbooks/base.yml",
+                        "extra_arguments": [
+                                "-vvvv"
+                        ],
+                        "staging_directory": "{{user `ansible_staging_directory`}}"
+                },
+                {
+                        "type": "shell",
+                        "inline": [
+                                "INSTALLED=`pip freeze`; if [ -n \"$INSTALLED\" ]; then echo \"$INSTALLED\" | xargs pip uninstall -y; fi",
+                                "rm -rf /var/cache/apk/*",
+                                "rm -rf /root/.cache"
+                        ]
+                }
+        ],
+        "_comment5": "Sequence action is presented as array in array.",
+        "post-processors": [
+                [
+                        {
+                                "type": "docker-tag",
+                                "repository": "fgtatsuro/infra-bridgehead",
+                                "tag": "alpine-3.3",
+                                "force": true
+                        }
+                ]
+        ]
+}

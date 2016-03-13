@@ -14,7 +14,9 @@ The contents it includes are  as follows.
 
 Supported image platforms are here.
 
-- Docker(Debian)
+- Docker
+  - Debian
+  - Alpine Linux
 
 Requirements
 ------------
@@ -44,7 +46,7 @@ How to
 
 .. code:: bash
 
-    $ packer build platforms/docker.json
+    $ packer build platforms/docker/debian.json
 
 3. If you want to upload the image, you need to use the way for each image type.
 
