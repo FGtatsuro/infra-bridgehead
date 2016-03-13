@@ -28,6 +28,9 @@ matrix:
         - bundle exec rake spec SPEC_TARGET=container
       after_script:
         - docker rm -f container
+      after_success:
+        - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
+        - docker push fgtatsuro/infra-bridgehead:debian-jessie
 
 sudo: required
 
@@ -35,3 +38,8 @@ install:
   - sudo pip install -r requirements.txt
   - ansible-galaxy install -r role_requirements.yml
   - bundle install
+
+env:
+  global:
+  - secure: i1k3Fzgw1HSdIeAur7syKUt8D4+ss8Z/f5C7IHWJbVE+B3m5O7za/FlC+6hSZZ8zy+OCCJhLo5YgzQT1SRoMSqoVEsKiUPSamYBNhdMT1d78HYi6BPdAig6eAJSxdtB7Qo+tpbkIHgTeS9F8zbq3THw+TXiRLec+MstYUOyj8Bfladb8Xto75S9RufrI22fWnWUjN7KtUrk37n1vRbOSoOl5ss+YgIHs0THp4BQ1qWS8vAKZ1d7slJrYxsFcc0IpAcR+HhOaPPWVXnYzUjp60Uqmdwb/XofGVW3FyPF9+jxK+APCZ7lKo4S8Sw9YMO+i62Gq7qkq5j44nnmyz7f3X4vdkUqRIFzrA/Ibcy4VY3RtGhYLALqMr1FplxB6ZONW0XBgeOCJ0FKQYgPHhSF/GhQIQhZXbc+2v/9csHfrCSjeX3mSFczTC1z++PjRv7wpSQV1ElZw14xxio4pBUWa/JgoFz3Q0EuALTFwtqzZZ61QMX0KQzS83y1iQLgvl7QaWMgOUhKIz0NHiQolICpKFDrYIWoACHxdPuTPbJbL7jjUN/zX9AZDA3d2aJTutuXaA74BP8ZC+yKB/yY3TFeI9n8retiB7I0L7UL5BcITKPK3ebyGN4HmHu4uDrbtJyUdB0ewoWqCSsvj63TTmDy5gzkIXaT5BrvRord5fMrMi6o=
+  - secure: eZ34DUDFzzduJzh4PW8fN1ZmmrfMuIIWk1eN5cZJccy//RzqhzhGTuXRHw2HsTPC7NtEZ5Yn6TDxKxy/+ty5hf/KUrrVBmakykliiDgQAEKqCRDQCFJF59uHKXoj/tNTBDVxlXvfXE5Sio2Byd5OoIIzc+CbFsYK9lnt5SeFJA8D+yxRLfXMcA74HQhFZoXiXYQOyyxXJR2c67CShKsA6pVG2fFs8qc3ehu36/Ya8pEBJkFrfTO2hZbVdJOX60u69tD5VnX7ErkTotRyOajApfcfapS7HbOi8oEQbIUsefkxhPZxkrGZ+oTbLZ2kwt16gW/0OuWMnBdPklvjuMdrbjMZsvIjXl6WyDqgabtIAY67cQ/1/nEulzh7QU8bh+y7/aZDJt3LiXp/L6Tt7xttO/57rbdkpRapWzlyqR1Wg58TRrKdH6eG5mtWAWDqr5DQ6ENfSkQ2ARNCfvBuwZJYWqXGnMEfxVfFS+4b85/OV3DCK0jBa+KOccAv2hfu3DsxYqBEM6D722fIU5LXjOCgoimyH4QioeXiIOITpeFNfC8c7ABO977VwcdV59N9IArA1BnQ5+Xuai/T8JMx57XVyREal585djRz9glZr0uQGCqxf3u/IlSRgPvxao935JulItQiKrPLvGtsp1jla9eg5JDbtMSFjIgANiH76YfFhOw=
