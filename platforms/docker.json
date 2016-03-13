@@ -20,8 +20,7 @@
                 {
                         "type": "shell",
                         "inline": [
-                                "if [ -z \"`which curl`\" ]; then apt-get update && apt-get install -y curl; fi",
-                                "if [ -z \"`which python`\" ]; then apt-get update && apt-get install -y python-dev && curl -kL https://bootstrap.pypa.io/get-pip.py | python; fi",
+                                "if [ -z \"`which python`\" ]; then apt-get update && apt-get install -y curl python-dev && curl -kL https://bootstrap.pypa.io/get-pip.py | python; fi",
                                 "if [ -z \"`which gcc`\" ]; then apt-get update && apt-get install -y gcc; fi",
                                 "if [ -z \"`which ansible`\" ]; then pip install ansible; fi",
                                 "mkdir -p {{user `ansible_staging_directory`}}",
