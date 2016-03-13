@@ -8,7 +8,7 @@
                 {
                         "type": "docker",
                         "communicator": "docker",
-                        "image": "python:2",
+                        "image": "python:2-slim",
                         "commit": true,
                         "pull": true
                 }
@@ -20,7 +20,7 @@
                 {
                         "type": "shell",
                         "inline": [
-                                "pip install ansible",
+                                "apt-get update && apt-get install -y gcc && pip install ansible",
                                 "mkdir -p {{user `ansible_staging_directory`}}",
                                 "if [ ! -e /usr/bin/python -a -e /usr/local/bin/python ]; then /bin/ln -s /usr/local/bin/python /usr/bin/python; fi"
                         ]
@@ -33,6 +33,9 @@
                 {
                         "type": "ansible-local",
                         "playbook_file": "playbooks/base.yml",
+                        "extra_arguments": [
+                                "-vvvv"
+                        ],
                         "staging_directory": "{{user `ansible_staging_directory`}}"
                 },
                 {
