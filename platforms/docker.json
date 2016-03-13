@@ -34,6 +34,16 @@
                         "type": "ansible-local",
                         "playbook_file": "playbooks/base.yml",
                         "staging_directory": "{{user `ansible_staging_directory`}}"
+                },
+                {
+                        "type": "shell",
+                        "inline": [
+                                "apt-get --purge -y remove subversion",
+                                "pip freeze | awk '{if($1 !~ /virtualenv/) print}' | xargs pip uninstall -y",
+                                "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*",
+                                "rm -rf /root/.cache /var/lib/gems/2.1.0/cache/*",
+                                "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
+                        ]
                 }
         ],
         "_comment4": "Sequence action is presented as array in array.",
