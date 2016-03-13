@@ -8,9 +8,9 @@
                 {
                         "type": "docker",
                         "communicator": "docker",
-                        "image": "fgtatsuro/infra-bridgehead:debian-jessie",
+                        "image": "debian:jessie",
                         "commit": true,
-                        "pull": false
+                        "pull": true
                 }
         ],
         "_comment1": "Docker builder with ansible-remote can't be used now. (Ref.)https://github.com/mitchellh/packer/issues/3331",
@@ -20,6 +20,8 @@
                 {
                         "type": "shell",
                         "inline": [
+                                "if [ -z \"`which curl`\" ]; then apt-get update && apt-get install -y curl; fi",
+                                "if [ -z \"`which python`\" ]; then apt-get update && apt-get install -y python-dev && curl -kL https://bootstrap.pypa.io/get-pip.py | python; fi",
                                 "if [ -z \"`which gcc`\" ]; then apt-get update && apt-get install -y gcc; fi",
                                 "if [ -z \"`which ansible`\" ]; then pip install ansible; fi",
                                 "mkdir -p {{user `ansible_staging_directory`}}",
