@@ -28,6 +28,9 @@ matrix:
         - bundle exec rake spec SPEC_TARGET=container
       after_script:
         - docker rm -f container
+      after_success:
+        - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        - docker push fgtatsuro/infra-bridgehead:debian-jessie
 
 sudo: required
 
