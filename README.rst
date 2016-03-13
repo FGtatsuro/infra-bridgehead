@@ -14,7 +14,9 @@ The contents it includes are  as follows.
 
 Supported image platforms are here.
 
-- Docker(Debian)
+- Docker
+  - Debian
+  - Alpine Linux
 
 Requirements
 ------------
