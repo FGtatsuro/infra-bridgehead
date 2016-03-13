@@ -1,8 +1,8 @@
-|Build Status|
-
 ==================================================
 infra-bridgehead
 ==================================================
+
+|Build Status|
 
 This project generates the base image for various infrastructures.
 
