@@ -68,7 +68,7 @@ For example,
 This is because I assume that the images are used for not only single role(ex. container having only one feature),
 but also multi roles(ex. innternal server on real machine).
 In this case, development tools/headers will be needed several times,
-and the time they are no longer needed depends on the project which use the images.
+and the time they are no longer needed depends on the projects which use the images.
 
 Thus, this project delegates the responsibility clearing such contents to users.
 
