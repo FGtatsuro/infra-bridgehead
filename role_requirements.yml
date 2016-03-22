@@ -6,4 +6,5 @@
 - src: FGtatsuro.docker-toolbox
 
 # For base
+- src: FGtatsuro.python-requirements
 - src: FGtatsuro.ruby

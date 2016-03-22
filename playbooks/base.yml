@@ -2,4 +2,5 @@
 - hosts: all
   remote_user: root
   roles:
+    - { role: FGtatsuro.python-requirements }
     - { role: FGtatsuro.ruby }
