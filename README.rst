@@ -4,13 +4,13 @@ infra-bridgehead
 
 |Build Status|
 
-This project generates the base image for various infrastructures by Packer()
+This project generates the base image for various infrastructures by Packer_.
 
 It is mainly used for infrastructure testing on CI.
 The contents it includes are  as follows.
 
 - Python(>= 2.7.9) (For Ansible)
-- Ansible(>=2.0) (For Ansible Local Provisioner of Packer_)
+- Ansible(>=2.0) (For Ansible Local Provisioner of Packer)
 - Ruby(>= 2.0) (For Serverspec)
 
 Supported image platforms are here.
