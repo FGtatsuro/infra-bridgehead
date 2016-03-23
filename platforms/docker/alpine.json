@@ -45,7 +45,6 @@
                 {
                         "type": "shell",
                         "inline": [
-                                "INSTALLED=`pip freeze`; if [ -n \"$INSTALLED\" ]; then echo \"$INSTALLED\" | xargs pip uninstall -y; fi",
                                 "rm -rf /var/cache/apk/*",
                                 "rm -rf /root/.cache"
                         ]

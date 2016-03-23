@@ -43,7 +43,6 @@
                 {
                         "type": "shell",
                         "inline": [
-                                "INSTALLED=`pip freeze`; if [ -n \"$INSTALLED\" ]; then echo \"$INSTALLED\" | xargs pip uninstall -y; fi",
                                 "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*",
                                 "rm -rf /root/.cache /var/lib/gems/2.1.0/cache/*",
                                 "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
