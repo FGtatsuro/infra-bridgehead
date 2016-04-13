@@ -4,3 +4,7 @@
   roles:
     - { role: FGtatsuro.python-requirements }
     - { role: FGtatsuro.ruby }
+  tasks:
+    - name: root use /bin/bash
+      user: name=root shell=/bin/bash
+      become: yes
