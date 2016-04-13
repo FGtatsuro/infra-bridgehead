@@ -22,7 +22,6 @@
                 {
                         "type": "shell",
                         "inline": [
-                                "if [ -z \"`which bash`\" ]; then apk update && apk add bash; fi",
                                 "if [ -z \"`which python`\" ]; then apk update && apk add curl python python-dev && curl -kL https://bootstrap.pypa.io/get-pip.py | python; fi",
                                 "if [ -z \"`which gcc`\" ]; then apk update && apk add gcc; fi",
                                 "if [ -z \"`which ansible`\" ]; then apk update && apk add musl-dev && pip install ansible; fi",
