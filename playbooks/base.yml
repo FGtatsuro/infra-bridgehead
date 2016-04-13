@@ -4,3 +4,14 @@
   roles:
     - { role: FGtatsuro.python-requirements }
     - { role: FGtatsuro.ruby }
+  tasks:
+    - block:
+      - name: Install Bash
+        apk: name=bash update_cache=yes
+        become: yes
+      # TODO: This is hacky way
+      # root:x:0:0:root:/root:/bin/ash
+      - name: Make root use /bin/bash as login shell
+        lineinfile: dest="/etc/passwd" regexp="^(root.*):/bin/ash$" line="\1:/bin/bash" backrefs=yes
+        become: yes
+      when: ansible_os_family == "Alpine"
