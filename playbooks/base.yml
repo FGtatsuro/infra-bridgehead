@@ -6,5 +6,6 @@
     - { role: FGtatsuro.ruby }
   tasks:
     - name: root use /bin/bash
-      user: name=root shell=/bin/bash
+      command: "chsh -s /bin/bash root"
       become: yes
+      changed_when: False
