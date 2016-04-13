@@ -43,7 +43,8 @@
                 {
                         "type": "shell",
                         "inline": [
-                                "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/*",
+                                "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/lib/apt/periodic/update-success-stamp",
+                                "touch -d '2000/1/1 00:00:00' /var/lib/apt/lists/",
                                 "rm -rf /root/.cache /var/lib/gems/2.1.0/cache/*",
                                 "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
                         ]
