@@ -38,7 +38,7 @@ matrix:
       env:
         - >+
           IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-ruby" PACKER_TEMPLATE="platforms/docker/debian.json"
-          PACKER_OPTIONS="-var 'ansible_tag=python,ruby' -var 'docker_tag=debian-jessie-ruby'" CONTAINER_NAME="container_withruby"
+          PACKER_OPTIONS="-var ansible_tag=python,ruby -var docker_tag=debian-jessie-ruby" CONTAINER_NAME="container_withruby"
     - os: linux
       dist: trusty
       language: python
@@ -66,7 +66,7 @@ matrix:
       env:
         - >+
           IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-ruby" PACKER_TEMPLATE=platforms/docker/alpine.json
-          PACKER_OPTIONS="-var 'ansible_tag=python,ruby' -var 'docker_tag=alpine-3.3-ruby'" CONTAINER_NAME="container_withruby"
+          PACKER_OPTIONS="-var ansible_tag=python,ruby -var docker_tag=alpine-3.3-ruby" CONTAINER_NAME="container_withruby"
 
 sudo: required
 
