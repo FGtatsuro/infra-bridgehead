@@ -7,6 +7,10 @@ matrix:
       script:
         - ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost -vvvv
         - bundle exec rake spec SPEC_TARGET=localhost
+      after_script:
+        - ;
+      after_success:
+        - ;
     - os: linux
       dist: trusty
       language: python
@@ -17,25 +21,52 @@ matrix:
         apt:
           packages:
           - python-pip
-      script:
-        - >+
-          ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost
-          --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
-          -vvvv
-        - bundle exec rake spec SPEC_TARGET=localhost
-        - packer build ${PACKER_OPTIONS} ${PACKER_TEMPLATE}
-        - docker run -it -d --name ${CONTAINER_NAME} ${IMAGE_NAME}
-        - bundle exec rake spec SPEC_TARGET=${CONTAINER_NAME}
-      after_script:
-        - docker rm -f container
-      after_success:
-        - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
-        - docker push ${IMAGE_NAME}
       env:
-        - IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie" PACKER_TEMPLATE="platforms/docker/debian.json" PACKER_OPTIONS="" CONTAINER_NAME="container"
-        - IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-ruby" PACKER_TEMPLATE="platforms/docker/debian.json" PACKER_OPTIONS="-var 'ansible_tag=withruby' -var 'docker_tag=debian-jessie-ruby'" CONTAINER_NAME="container_withruby"
-        - IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3" PACKER_TEMPLATE=platforms/docker/alpine.json PACKER_OPTIONS="" CONTAINER_NAME="container"
-        - IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-ruby" PACKER_TEMPLATE=platforms/docker/alpine.json PACKER_OPTIONS="-var 'ansible_tag=withruby' -var 'docker_tag=alpine-3.3-ruby'" CONTAINER_NAME="container_withruby"
+        - >+
+          IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie" PACKER_TEMPLATE="platforms/docker/debian.json"
+          PACKER_OPTIONS="" CONTAINER_NAME="container"
+    - os: linux
+      dist: trusty
+      language: python
+      python: 2.7
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+          - python-pip
+      env:
+        - >+
+          IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-ruby" PACKER_TEMPLATE="platforms/docker/debian.json"
+          PACKER_OPTIONS="-var 'ansible_tag=withruby' -var 'docker_tag=debian-jessie-ruby'" CONTAINER_NAME="container_withruby"
+    - os: linux
+      dist: trusty
+      language: python
+      python: 2.7
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+          - python-pip
+      env:
+        - >+
+          IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3" PACKER_TEMPLATE=platforms/docker/alpine.json
+          PACKER_OPTIONS="" CONTAINER_NAME="container"
+    - os: linux
+      dist: trusty
+      language: python
+      python: 2.7
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+          - python-pip
+      env:
+        - >+
+          IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-ruby" PACKER_TEMPLATE=platforms/docker/alpine.json
+          PACKER_OPTIONS="-var 'ansible_tag=withruby' -var 'docker_tag=alpine-3.3-ruby'" CONTAINER_NAME="container_withruby"
 
 sudo: required
 
@@ -43,6 +74,20 @@ install:
   - sudo pip install -r requirements.txt
   - ansible-galaxy install -r role_requirements.yml
   - bundle install
+script:
+  - >+
+    ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost
+    --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
+    -vvvv
+  - bundle exec rake spec SPEC_TARGET=localhost
+  - packer build ${PACKER_OPTIONS} ${PACKER_TEMPLATE}
+  - docker run -it -d --name ${CONTAINER_NAME} ${IMAGE_NAME}
+  - bundle exec rake spec SPEC_TARGET=${CONTAINER_NAME}
+after_script:
+  - docker rm -f container
+after_success:
+  - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
+  - docker push ${IMAGE_NAME}
 
 env:
   global:
