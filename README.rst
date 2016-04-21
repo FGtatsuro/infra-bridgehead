@@ -11,7 +11,7 @@ The contents it includes are  as follows.
 
 - Python(>= 2.7.9) (For Ansible)
 - Ansible(>=2.0) (For Ansible Local Provisioner of Packer)
-- Ruby(>= 2.0) (For Serverspec)
+- Ruby(>= 2.0) (For Serverspec only if building image with 'withruby' tag)
 
 Supported image platforms are here.
 
