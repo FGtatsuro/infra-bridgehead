@@ -15,7 +15,13 @@ namespace :spec do
       :name     =>  'container',
       :role     =>  'base',
       :backend  =>  'docker'
+    },
+    {
+      :name     =>  'container_withruby',
+      :role     =>  'base',
+      :backend  =>  'docker'
     }
+
   ]
   if ENV['SPEC_TARGET'] then
     target = hosts.select{|h|  h[:name] == ENV['SPEC_TARGET']}
