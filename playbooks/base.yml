@@ -4,10 +4,10 @@
   roles:
     - role: FGtatsuro.python-requirements
       tags:
-        - always
+        - python
     - role: FGtatsuro.ruby
       tags:
-        - withruby
+        - ruby
   tasks:
     - block:
       - name: Install Bash
