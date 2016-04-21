@@ -2,8 +2,12 @@
 - hosts: all
   remote_user: root
   roles:
-    - { role: FGtatsuro.python-requirements }
-    - { role: FGtatsuro.ruby }
+    - role: FGtatsuro.python-requirements
+      tags:
+        - always
+    - role: FGtatsuro.ruby
+      tags:
+        - withruby
   tasks:
     - block:
       - name: Install Bash
