@@ -1,0 +1,8 @@
+---
+# post-tasks with Docker connection
+# NOTE: changed status of This task is always true.
+# Now, I have no idea to set changed=false when the result of playbook execution doesn't have any changes for target container.
+- name: Commit provisioning container
+  command: "docker commit {{ inventory_hostname }} {{ docker_commit_image }}"
+  delegate_to: localhost
+  become: "{{ docker_command_become }}"

@@ -1,0 +1,20 @@
+---
+# pre-tasks with Docker connection
+# We don't use docker module because it requires that docker-py exists in library path of system python(=/usr/bin/python).
+# It's difficult to meet above requirement in any place.
+- block:
+  - name: Check target container runs
+    command: "docker exec {{ inventory_hostname }} pwd"
+    register: docker_status
+    # NOTE: These conditions will be affected by spec modifications of Docker error message.
+    failed_when: "'Cannot connect to the Docker daemon' in docker_status.stderr"
+    changed_when: no
+  - name: Clear not-running container
+    command: "docker rm {{ inventory_hostname }}"
+    when: "'Container {{ inventory_hostname }} is not running' in docker_status.stderr"
+  - name: Run target container
+    command: "docker run -it -d --name {{ inventory_hostname }} {{ docker_base_image }} /bin/sh"
+    when: "docker_status.rc != 0"
+  # TODO: Not only localhost, but other 'buildenv' hosts can be delegate_to target.
+  delegate_to: localhost
+  become: "{{ docker_command_become }}"
