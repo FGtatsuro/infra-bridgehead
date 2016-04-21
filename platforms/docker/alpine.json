@@ -2,7 +2,9 @@
         "description": "The base image for various infrastructures",
         "min_packer_version": "0.9.0",
         "variables": {
-                "ansible_staging_directory": "/tmp/packer-provisioner-ansible-local"
+                "ansible_staging_directory": "/tmp/packer-provisioner-ansible-local",
+                "ansible_tag": "always",
+                "docker_tag": "alpine-3.3"
         },
         "_comment1": "The image of Alpine Linux doesn't have /bin/bash.",
         "builders": [
@@ -38,6 +40,8 @@
                         "type": "ansible-local",
                         "playbook_file": "playbooks/base.yml",
                         "extra_arguments": [
+                                "--tags",
+                                "{{user `ansible_tag`}}",
                                 "-vvvv"
                         ],
                         "staging_directory": "{{user `ansible_staging_directory`}}"
@@ -56,7 +60,7 @@
                         {
                                 "type": "docker-tag",
                                 "repository": "fgtatsuro/infra-bridgehead",
-                                "tag": "alpine-3.3",
+                                "tag": "{{user `docker_tag`}}",
                                 "force": true
                         }
                 ]
