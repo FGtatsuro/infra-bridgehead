@@ -11,6 +11,6 @@ describe command('python --version') do
   its(:stderr) { should match /^Python 2\.7\.(9|1\d)/ }
 end
 
-describe command('ruby --version') do
+describe command('ruby --version'), :if => ENV['TARGET_HOST'].include?('withruby') do
   its(:stdout) { should match /^ruby 2\./ }
 end
