@@ -4,13 +4,13 @@ infra-bridgehead
 
 |Build Status|
 
-This project generates the base image for various infrastructures by Packer_.
+This project generates the base image for various infrastructures.
 
 It is mainly used for infrastructure testing on CI.
 The contents it includes are  as follows.
 
 - Python(>= 2.7.9) (For Ansible)
-- Ruby(>= 2.0) (For Serverspec only if building image with 'withruby' tag)
+- Ruby(>= 2.0) (For Serverspec only if building image including tasks with 'ruby' tag)
 
 Supported image platforms are here.
 
@@ -34,7 +34,7 @@ Supported build environments are here.
 How to
 ------
 
-1. Setup Packer build environment.
+1. Setup build environment.
 
 .. code:: bash
 
@@ -46,7 +46,9 @@ How to
 
 .. code:: bash
 
-    $ packer build platforms/docker/debian.json
+    $ ansible-playbook playbooks/base.yml -i inventory/default -l container \
+      --tags "python" \
+      --extra-vars="docker_base_image=debian:jessie docker_commit_image=fgtatsuro/infra-bridgehead:debian-jessie"
 
 3. If you want to upload the image, you need to use the way for each image type.
 
@@ -75,5 +77,3 @@ Thus, this project delegates the responsibility clearing such contents to users.
 
 .. |Build Status| image:: https://travis-ci.org/FGtatsuro/infra-bridgehead.svg?branch=master
    :target: https://travis-ci.org/FGtatsuro/infra-bridgehead
-
-.. _Packer: https://github.com/mitchellh/packer
