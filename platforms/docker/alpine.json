@@ -49,6 +49,7 @@
                 {
                         "type": "shell",
                         "inline": [
+                                "pip install pip-autoremove && pip-autoremove ansible -y && pip uninstall -y pip-autoremove",
                                 "rm -rf /var/cache/apk/*",
                                 "rm -rf /root/.cache"
                         ]
