@@ -14,3 +14,7 @@ end
 describe command('ruby --version'), :if => ENV['TARGET_HOST'].include?('withruby') do
   its(:stdout) { should match /^ruby 2\./ }
 end
+
+describe command('ruby --version'), :if => !ENV['TARGET_HOST'].include?('withruby') do
+  its(:exit_status) { should_not eq 0 }
+end
