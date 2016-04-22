@@ -3,10 +3,8 @@
 # To shrink container size
 - block:
   - name: Clear cache related to apk
-    command: "rm -rf /var/cache/apk/*",
+    shell: "rm -rf /var/cache/apk/*"
   - name: Clear cache related to some softwares
-    command: "rm -rf /root/.cache"
+    shell: "rm -rf /root/.cache"
   become: yes
   when: "ansible_connection == 'docker'"
-  tags:
-    - always
