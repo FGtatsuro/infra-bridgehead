@@ -15,23 +15,26 @@
   - name: Run target container
     command: "docker run -it -d --name {{ inventory_hostname }} {{ docker_base_image }} /bin/sh"
     when: "docker_status.rc != 0"
-
   # Andile Docker connection plugin requires Python exists on /usr/bin/python of container.
   - name: Check whether Python exists on /usr/bin/python
     command: "docker exec {{ inventory_hostname }} ls /usr/bin/python"
     register: result_python
     failed_when: no
     changed_when: no
-  # We can't use ansible_os_family to run commands(install Python) for each OS family because setup module hasn't been executed and
-  # this execution on container requires /user/bin/python...
-  - name: Install Python for task execution(Debian)
-    shell: "docker exec {{ inventory_hostname }} /bin/bash -c 'apt-get update -qq && apt-get install -y python --no-install-recommends -qq'"
-    when: "result_python.rc != 0"
-    failed_when: no
-  - name: Install Python for task execution(Alpine)
-    shell: "docker exec {{ inventory_hostname }} /bin/sh -c 'apk update && apk add curl python'"
-    when: "result_python.rc != 0"
-    failed_when: no
   # TODO: Not only localhost, but other 'buildenv' hosts can be delegate_to target.
   delegate_to: localhost
   become: "{{ docker_command_become }}"
+
+# We can't use ansible_os_family to run commands(install Python) for each OS family because setup module hasn't been executed and
+# this execution on container requires /user/bin/python...
+- block:
+  # TODO: load script from Ansible project structure.(ex. files directory of role)
+  - name: Copy install script for Python
+    command: "docker cp playbooks/scripts/install_python.sh {{ inventory_hostname }}:/tmp/install_python.sh"
+  - name: Install Python for task execution
+    command: "docker exec {{ inventory_hostname }} /bin/sh /tmp/install_python.sh"
+  - name: Delete install script for Python
+    command: "docker exec {{ inventory_hostname }} rm -f /tmp/install_python.sh"
+  delegate_to: localhost
+  become: "{{ docker_command_become }}"
+  when: "result_python.rc != 0"
