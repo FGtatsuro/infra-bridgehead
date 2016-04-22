@@ -1,0 +1,40 @@
+---
+# pre-tasks with Docker connection
+# We don't use docker module because it requires that docker-py exists in library path of system python(=/usr/bin/python).
+# It's difficult to meet above requirement in any place.
+- block:
+  - name: Check target container runs
+    command: "docker exec {{ inventory_hostname }} pwd"
+    register: docker_status
+    # NOTE: These conditions will be affected by spec modifications of Docker error message.
+    failed_when: "'Cannot connect to the Docker daemon' in docker_status.stderr"
+    changed_when: no
+  - name: Clear not-running container
+    command: "docker rm {{ inventory_hostname }}"
+    when: "'Container {{ inventory_hostname }} is not running' in docker_status.stderr"
+  - name: Run target container
+    command: "docker run -it -d --name {{ inventory_hostname }} {{ docker_base_image }} /bin/sh"
+    when: "docker_status.rc != 0"
+  # Andile Docker connection plugin requires Python exists on /usr/bin/python of container.
+  - name: Check whether Python exists on /usr/bin/python
+    command: "docker exec {{ inventory_hostname }} ls /usr/bin/python"
+    register: result_python
+    failed_when: no
+    changed_when: no
+  # TODO: Not only localhost, but other 'buildenv' hosts can be delegate_to target.
+  delegate_to: localhost
+  become: "{{ docker_command_become }}"
+
+# We can't use ansible_os_family to run commands(install Python) for each OS family because setup module hasn't been executed and
+# this execution on container requires /user/bin/python...
+- block:
+  # TODO: load script from Ansible project structure.(ex. files directory of role)
+  - name: Copy install script for Python
+    command: "docker cp playbooks/scripts/install_python.sh {{ inventory_hostname }}:/tmp/install_python.sh"
+  - name: Install Python for task execution
+    command: "docker exec {{ inventory_hostname }} /bin/sh /tmp/install_python.sh"
+  - name: Delete install script for Python
+    command: "docker exec {{ inventory_hostname }} rm -f /tmp/install_python.sh"
+  delegate_to: localhost
+  become: "{{ docker_command_become }}"
+  when: "result_python.rc != 0"

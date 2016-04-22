@@ -1,6 +1,17 @@
 ---
 - hosts: all
-  remote_user: root
+  # Prevent error occurs before pre_tasks. (ex. Docker container isn't running.)
+  gather_facts: no
+  pre_tasks:
+    - block:
+      - name: Do pre-tasks for each connection type
+        include: "pre_tasks/connection/{{ ansible_connection }}.yml"
+      - name: "Gather fact information on target platform."
+        setup:
+      - name: Do pre-tasks for each OS family
+        include: "pre_tasks/os/{{ ansible_os_family }}.yml"
+      tags:
+        - always
   roles:
     - role: FGtatsuro.python-requirements
       tags:
@@ -9,13 +20,15 @@
       tags:
         - ruby
   tasks:
+    - name: Do tasks for each OS family
+      include: "tasks/os/{{ ansible_os_family }}.yml"
+      tags:
+        - always
+  post_tasks:
     - block:
-      - name: Install Bash
-        apk: name=bash update_cache=yes
-        become: yes
-      # TODO: This is hacky way
-      # root:x:0:0:root:/root:/bin/ash
-      - name: Make root use /bin/bash as login shell
-        lineinfile: dest="/etc/passwd" regexp="^(root.*):/bin/ash$" line="\1:/bin/bash" backrefs=yes
-        become: yes
-      when: ansible_os_family == "Alpine"
+      - name: Do post-tasks for each OS family
+        include: "post_tasks/os/{{ ansible_os_family }}.yml"
+      - name: Do post-tasks for connection type
+        include: "post_tasks/connection/{{ ansible_connection }}.yml"
+      tags:
+        - always

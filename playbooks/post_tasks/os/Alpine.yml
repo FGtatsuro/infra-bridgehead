@@ -1,0 +1,10 @@
+---
+# post-tasks on Alpine Linux
+# To shrink container size
+- block:
+  - name: Clear cache related to apk
+    shell: "rm -rf /var/cache/apk/*"
+  - name: Clear cache related to some softwares
+    shell: "rm -rf /root/.cache"
+  become: yes
+  when: "ansible_connection == 'docker'"

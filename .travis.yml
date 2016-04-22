@@ -23,8 +23,10 @@ matrix:
           - python-pip
       env:
         - >+
-          IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie" PACKER_TEMPLATE="platforms/docker/debian.json"
-          PACKER_OPTIONS="" CONTAINER_NAME="container"
+          BASE_IMAGE_NAME="debian:jessie"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie"
+          TAGS="python"
+          CONTAINER_NAME="container"
     - os: linux
       dist: trusty
       language: python
@@ -37,8 +39,10 @@ matrix:
           - python-pip
       env:
         - >+
-          IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-ruby" PACKER_TEMPLATE="platforms/docker/debian.json"
-          PACKER_OPTIONS="-var ansible_tag=python,ruby -var docker_tag=debian-jessie-ruby" CONTAINER_NAME="container_withruby"
+          BASE_IMAGE_NAME="debian:jessie"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-ruby"
+          TAGS="python,ruby"
+          CONTAINER_NAME="container_withruby"
     - os: linux
       dist: trusty
       language: python
@@ -51,8 +55,10 @@ matrix:
           - python-pip
       env:
         - >+
-          IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3" PACKER_TEMPLATE=platforms/docker/alpine.json
-          PACKER_OPTIONS="" CONTAINER_NAME="container"
+          BASE_IMAGE_NAME="alpine:3.3"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3"
+          TAGS="python"
+          CONTAINER_NAME="container"
     - os: linux
       dist: trusty
       language: python
@@ -65,8 +71,10 @@ matrix:
           - python-pip
       env:
         - >+
-          IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-ruby" PACKER_TEMPLATE=platforms/docker/alpine.json
-          PACKER_OPTIONS="-var ansible_tag=python,ruby -var docker_tag=alpine-3.3-ruby" CONTAINER_NAME="container_withruby"
+          BASE_IMAGE_NAME="alpine:3.3"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-ruby"
+          TAGS="python,ruby"
+          CONTAINER_NAME="container_withruby"
 
 sudo: required
 
@@ -80,14 +88,17 @@ script:
     --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
     -vvvv
   - bundle exec rake spec SPEC_TARGET=localhost
-  - packer build ${PACKER_OPTIONS} ${PACKER_TEMPLATE}
-  - docker run -it -d --name ${CONTAINER_NAME} ${IMAGE_NAME}
+  - >+
+    ansible-playbook playbooks/base.yml -i inventory/default -l ${CONTAINER_NAME}
+    --tags ${TAGS}
+    --extra-vars="docker_base_image=${BASE_IMAGE_NAME} docker_commit_image=${COMMIT_IMAGE_NAME}"
+    -vvvv
   - bundle exec rake spec SPEC_TARGET=${CONTAINER_NAME}
 after_script:
-  - docker rm -f container
+  - docker rm -f  ${CONTAINER_NAME}
 after_success:
   - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
-  - docker push ${IMAGE_NAME}
+  - docker push ${COMMIT_IMAGE_NAME}
 
 env:
   global:
