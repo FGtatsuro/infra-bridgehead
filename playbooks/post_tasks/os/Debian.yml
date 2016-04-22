@@ -3,17 +3,15 @@
 # To shrink container size
 - block:
   - name: Clear cache related to apt
-    command: "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/lib/apt/periodic/update-success-stamp"
+    shell: "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/lib/apt/periodic/update-success-stamp"
   # Hack for container to update successfully after cache deletion
   - name: Hack for container to update successfully after cache deletion
-    command: "touch -d '2000/1/1 00:00:00' /var/lib/apt/lists/"
+    shell: "touch -d '2000/1/1 00:00:00' /var/lib/apt/lists/"
   - name: Clear cache related to pip
-    command: "rm -rf /root/.cache"
+    shell: "rm -rf /root/.cache"
   - name: Clear cache related to RubyGems
-    command: "rm -rf /var/lib/gems/2.1.0/cache/*"
+    shell: "rm -rf /var/lib/gems/2.1.0/cache/*"
   - name: Clear unnecessary resources
-    command: "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
+    shell: "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
   become: yes
   when: "ansible_connection == 'docker'"
-  tags:
-    - always
