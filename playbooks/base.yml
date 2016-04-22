@@ -3,12 +3,15 @@
   # Prevent error occurs before pre_tasks. (ex. Docker container isn't running.)
   gather_facts: no
   pre_tasks:
-    - name: Do pre-tasks for each connection type
-      include: "pre_tasks/connection/{{ ansible_connection }}.yml"
-    - name: "Gather fact information on target platform."
-      setup:
-    - name: Do pre-tasks for each OS
-      include: "pre_tasks/os/{{ ansible_os_family }}.yml"
+    - block:
+      - name: Do pre-tasks for each connection type
+        include: "pre_tasks/connection/{{ ansible_connection }}.yml"
+      - name: "Gather fact information on target platform."
+        setup:
+      - name: Do pre-tasks for each OS family
+        include: "pre_tasks/os/{{ ansible_os_family }}.yml"
+      tags:
+        - always
   roles:
     - role: FGtatsuro.python-requirements
       tags:
@@ -17,8 +20,15 @@
       tags:
         - ruby
   tasks:
-    - name: Do tasks for each OS
+    - name: Do tasks for each OS family
       include: "tasks/os/{{ ansible_os_family }}.yml"
+      tags:
+        - always
   post_tasks:
-    - name: Do post-tasks for connection type
-      include: "post_tasks/connection/{{ ansible_connection }}.yml"
+    - block:
+      - name: Do post-tasks for each OS family
+        include: "post_tasks/os/{{ ansible_os_family }}.yml"
+      - name: Do post-tasks for connection type
+        include: "post_tasks/connection/{{ ansible_connection }}.yml"
+      tags:
+        - always
