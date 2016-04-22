@@ -39,6 +39,7 @@
                 {
                         "type": "ansible-local",
                         "playbook_file": "playbooks/base.yml",
+                        "playbook_dir": "playbooks",
                         "extra_arguments": [
                                 "--tags",
                                 "{{user `ansible_tag`}}",
