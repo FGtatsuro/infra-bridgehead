@@ -98,7 +98,7 @@ after_script:
   - docker rm -f  ${CONTAINER_NAME}
 after_success:
   - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
-  - docker push ${IMAGE_NAME}
+  - docker push ${COMMIT_IMAGE_NAME}
 
 env:
   global:
