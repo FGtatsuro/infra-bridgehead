@@ -1,11 +1,11 @@
 [buildenv]
 localhost       ansible_connection=local
 
-[container]
+[containers]
 container
 container_withruby
 
-[container:vars]
+[containers:vars]
 ansible_connection=docker
 ansible_user=root
 # Whether docker command of buildenv with sudo
