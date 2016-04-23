@@ -18,3 +18,7 @@ end
 describe command('ruby --version'), :if => !ENV['TARGET_HOST'].include?('withruby') do
   its(:exit_status) { should_not eq 0 }
 end
+
+describe command("/bin/bash -c 'pwd'") do
+  its(:exit_status) { should eq 0 }
+end
