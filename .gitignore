@@ -1,3 +1,4 @@
 # Ansible
 tests/*.retry
+playbooks/*.retry
 roles/*
