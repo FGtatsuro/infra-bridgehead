@@ -4,7 +4,9 @@
 - block:
   - name: Clear cache related to apk
     shell: "rm -rf /var/cache/apk/*"
-  - name: Clear cache related to some softwares
-    shell: "rm -rf /root/.cache"
+    args:
+      warn: False
+  - name: Clear cache of root
+    file: path="/root/.cache" state="absent"
   become: yes
   when: "ansible_connection == 'docker'"

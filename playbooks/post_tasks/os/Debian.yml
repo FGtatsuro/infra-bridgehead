@@ -4,14 +4,23 @@
 - block:
   - name: Clear cache related to apt
     shell: "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/lib/apt/periodic/update-success-stamp"
+    args:
+      warn: False
   # Hack for container to update successfully after cache deletion
   - name: Hack for container to update successfully after cache deletion
-    shell: "touch -d '2000/1/1 00:00:00' /var/lib/apt/lists/"
-  - name: Clear cache related to pip
-    shell: "rm -rf /root/.cache"
+    command: "touch -d '2000/1/1 00:00:00' /var/lib/apt/lists/"
+    args:
+      warn: False
+  - name: Clear cache of root
+    file: path="/root/.cache" state="absent"
   - name: Clear cache related to RubyGems
-    shell: "rm -rf /var/lib/gems/2.1.0/cache/*"
+    shell: "rm -rf /var/lib/gems/**/cache/*"
+    args:
+      warn: False
   - name: Clear unnecessary resources
     shell: "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
+    args:
+      warn: False
   become: yes
   when: "ansible_connection == 'docker'"
+
