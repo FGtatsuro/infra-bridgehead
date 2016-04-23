@@ -2,25 +2,88 @@
 # post-tasks on Debian family
 # To shrink container size
 - block:
-  - name: Clear cache related to apt
-    shell: "rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archives/* /var/lib/apt/periodic/update-success-stamp"
+  - name: Check cache under '/tmp'
+    shell: "ls /tmp/*"
+    register: check_cache
+    changed_when: no
+    failed_when: no
+  - name: Clear cache under '/tmp'
+    shell: "rm -rf /tmp/*"
     args:
       warn: False
+    when: check_cache.rc == 0
+  - name: Check cache under '/var/tmp'
+    shell: "ls /var/tmp/*"
+    register: check_cache
+    changed_when: no
+    failed_when: no
+  - name: Clear cache under '/var/tmp'
+    shell: "rm -rf /var/tmp/*"
+    args:
+      warn: False
+    when: check_cache.rc == 0
+
+  - name: Check cache of apt databases
+    shell: "ls /var/lib/apt/lists/*"
+    register: check_cache
+    changed_when: no
+    failed_when: no
+  - name: Clear cache of apt databases
+    shell: "rm -rf /var/lib/apt/lists/*"
+    args:
+      warn: False
+    when: check_cache.rc == 0
+  - name: Check cache of apt packages
+    shell: "ls /var/cache/apt/archives/*"
+    register: check_cache
+    changed_when: no
+    failed_when: no
+  - name: Clear cache of apt packages
+    shell: "rm -rf /var/cache/apt/archives/*"
+    args:
+      warn: False
+    when: check_cache.rc == 0
+  - name: Clear timestamp of apt
+    file: path="/var/lib/apt/periodic/update-success-stamp" state="absent"
   # Hack for container to update successfully after cache deletion
   - name: Hack for container to update successfully after cache deletion
     command: "touch -d '2000/1/1 00:00:00' /var/lib/apt/lists/"
     args:
       warn: False
+
   - name: Clear cache of root
     file: path="/root/.cache" state="absent"
+
+  - name: Check cache related to RubyGems
+    shell: "ls /var/lib/gems/**/cache/*"
+    register: check_cache
+    changed_when: no
+    failed_when: no
   - name: Clear cache related to RubyGems
     shell: "rm -rf /var/lib/gems/**/cache/*"
     args:
       warn: False
-  - name: Clear unnecessary resources
-    shell: "rm -rf /usr/share/doc/* && rm -rf /usr/share/info/*"
+    when: check_cache.rc == 0
+
+  - name: Check resources under '/usr/share/doc'
+    shell: "ls /usr/share/doc/*"
+    register: check_resource
+    changed_when: no
+    failed_when: no
+  - name: Clear resources under '/usr/share/doc'
+    shell: "rm -rf /usr/share/doc/*"
     args:
       warn: False
+    when: check_resource.rc == 0
+  - name: Check resources under '/usr/share/info'
+    shell: "ls /usr/share/info/*"
+    register: check_resource
+    changed_when: no
+    failed_when: no
+  - name: Clear resources under '/usr/share/info'
+    shell: "rm -rf /usr/share/info/*"
+    args:
+      warn: False
+    when: check_resource.rc == 0
   become: yes
   when: "ansible_connection == 'docker'"
-

@@ -2,10 +2,17 @@
 # post-tasks on Alpine Linux
 # To shrink container size
 - block:
+  - name: Check cache related to apk
+    shell: "ls /var/cache/apk/*"
+    register: check_cache
+    changed_when: no
+    failed_when: no
   - name: Clear cache related to apk
     shell: "rm -rf /var/cache/apk/*"
     args:
       warn: False
+    when: check_cache.rc == 0
+
   - name: Clear cache of root
     file: path="/root/.cache" state="absent"
   become: yes
