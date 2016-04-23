@@ -22,3 +22,7 @@ end
 describe command("/bin/bash -c 'pwd'") do
   its(:exit_status) { should eq 0 }
 end
+
+describe command("ansible-playbook --version"), :if => ENV['TARGET_HOST'].include?('wercker') do
+  its(:exit_status) { should eq 0 }
+end
