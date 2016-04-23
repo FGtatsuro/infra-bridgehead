@@ -17,7 +17,7 @@ namespace :spec do
       :backend  =>  'docker'
     },
     {
-      :name     =>  'container_withruby',
+      :name     =>  'container_forwercker',
       :role     =>  'base',
       :backend  =>  'docker'
     }

@@ -18,7 +18,7 @@
         - python
     - role: FGtatsuro.ruby
       tags:
-        - ruby
+        - wercker
   tasks:
     - name: Do tasks for each OS family
       include: "tasks/os/{{ ansible_os_family }}.yml"
