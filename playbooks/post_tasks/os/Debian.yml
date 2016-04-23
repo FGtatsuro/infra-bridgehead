@@ -42,7 +42,8 @@
     shell: "rm -rf /var/cache/apt/archives/*"
     args:
       warn: False
-    when: check_cache.rc == 0
+    # Workaround: 'ls /var/cache/apt/archives/*' returns rc=0 after apt-get update.(even if no file exists under /var/cache/apt/archives)
+    when: "check_cache.rc == 0 and check_cache.stdout_lines|length != 0"
   - name: Clear timestamp of apt
     file: path="/var/lib/apt/periodic/update-success-stamp" state="absent"
   # Hack for container to update successfully after cache deletion
