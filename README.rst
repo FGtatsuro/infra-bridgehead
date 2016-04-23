@@ -69,7 +69,7 @@ For example,
 - build-essential(Debian)/build-base(Alpine Linux)
 
 This is because I assume that the images are used for not only single role(ex. container having only one feature),
-but also multi roles(ex. innternal server on real machine).
+but also multi roles(ex. Jenkins slave testing multiple features with several dependencies).
 In this case, development tools/headers will be needed several times,
 and the time they are no longer needed depends on the projects which use the images.
 
