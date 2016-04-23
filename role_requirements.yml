@@ -8,3 +8,4 @@
 # For base
 - src: FGtatsuro.python-requirements
 - src: FGtatsuro.ruby
+- src: FGtatsuro.ansible

@@ -3,7 +3,7 @@ localhost       ansible_connection=local
 
 [containers]
 container
-container_withruby
+container_forwercker
 
 [containers:vars]
 ansible_connection=docker

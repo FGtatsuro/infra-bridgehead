@@ -40,9 +40,9 @@ matrix:
       env:
         - >+
           BASE_IMAGE_NAME="debian:jessie"
-          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-ruby"
-          TAGS="python,ruby"
-          CONTAINER_NAME="container_withruby"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:debian-jessie-wercker"
+          TAGS="python,wercker"
+          CONTAINER_NAME="container_forwercker"
     - os: linux
       dist: trusty
       language: python
@@ -72,9 +72,9 @@ matrix:
       env:
         - >+
           BASE_IMAGE_NAME="alpine:3.3"
-          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-ruby"
-          TAGS="python,ruby"
-          CONTAINER_NAME="container_withruby"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-wercker"
+          TAGS="python,wercker"
+          CONTAINER_NAME="container_forwercker"
 
 sudo: required
 
