@@ -3,7 +3,7 @@
 # We don't use docker module because it requires that docker-py exists in library path of system python(=/usr/bin/python).
 # It's difficult to meet above requirement in any place.
 - block:
-  - name: Check target container runs
+  - name: Check whether container with target name runs
     command: "docker exec {{ inventory_hostname }} pwd"
     register: docker_status
     # NOTE: These conditions will be affected by spec modifications of Docker error message.
@@ -12,9 +12,21 @@
   - name: Clear not-running container
     command: "docker rm {{ inventory_hostname }}"
     when: "'Container {{ inventory_hostname }} is not running' in docker_status.stderr"
+
+  - name: Check whether running container is generated from target image
+    shell: "docker ps | grep {{ docker_base_image }}.*{{ inventory_hostname}}"
+    register: docker_status_with_image
+    failed_when: no
+    changed_when: no
+    when: "docker_status.rc == 0"
+  - name: Clear running container generated from not-target image
+    command: "docker rm -f {{ inventory_hostname }}"
+    # "'cmd' in docker_status_with_image" means not skipped
+    when: "('cmd' in docker_status_with_image) and docker_status_with_image.rc != 0"
+
   - name: Run target container
     command: "docker run -it -d --name {{ inventory_hostname }} {{ docker_base_image }} /bin/sh"
-    when: "docker_status.rc != 0"
+    when: "docker_status.rc != 0 or docker_status_with_image.rc != 0"
   # Andile Docker connection plugin requires Python exists on /usr/bin/python of container.
   - name: Check whether Python exists on /usr/bin/python
     command: "docker exec {{ inventory_hostname }} ls /usr/bin/python"
