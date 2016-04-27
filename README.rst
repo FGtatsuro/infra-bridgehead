@@ -9,12 +9,13 @@ This project generates the base image for various infrastructures.
 It is mainly used for infrastructure testing on CI.
 The contents it includes are  as follows.
 
-- Python(>= 2.7.9) (For Ansible)
-- Ruby(>= 2.0) (For Serverspec only if building image including tasks with 'ruby' tag)
+- Python(>= 2.7.9)
+- Ruby(>= 2.0) (For Serverspec only if image is build with tasks of 'wercker' tag)
+- Ansible(>=2.0.2.0) (Only if image is build with tasks of 'wercker' tag)
 
 Supported image platforms are here.
 
-- Docker
+- Docker container(https://hub.docker.com/r/fgtatsuro/infra-bridgehead/)
   - Debian
   - Alpine Linux
 
@@ -49,6 +50,11 @@ How to
     $ ansible-playbook playbooks/base.yml -i inventory/default -l container \
       --tags "python" \
       --extra-vars="docker_base_image=debian:jessie docker_commit_image=fgtatsuro/infra-bridgehead:debian-jessie"
+
+    # With Ruby/Ansible(For Wercker)
+    $ ansible-playbook playbooks/base.yml -i inventory/default -l container \
+      --tags "python,wercker" \
+      --extra-vars="docker_base_image=debian:jessie docker_commit_image=fgtatsuro/infra-bridgehead:debian-jessie-wercker"
 
 3. If you want to upload the image, you need to use the way for each image type.
 
