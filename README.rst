@@ -16,8 +16,8 @@ The contents it includes are  as follows.
 Supported image platforms are here.
 
 - Docker container(https://hub.docker.com/r/fgtatsuro/infra-bridgehead/)
-  - Debian
-  - Alpine Linux
+   - Debian
+   - Alpine Linux
 
 Requirements
 ------------
