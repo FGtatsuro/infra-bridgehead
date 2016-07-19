@@ -12,6 +12,7 @@ The contents it includes are  as follows.
 - Python(>= 2.7.9)
 - Ruby(>= 2.0) (For Serverspec only if image is build with tasks of 'wercker' tag)
 - Ansible(>=2.0.2.0) (Only if image is build with tasks of 'wercker' tag)
+- OpenJDK(>=1.8) (Only if image is build with tasks of 'wercker tag)
 
 Supported image platforms are here.
 

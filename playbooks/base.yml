@@ -22,6 +22,9 @@
     - role: FGtatsuro.ansible
       tags:
         - wercker
+    - role: FGtatsuro.java
+      tags:
+        - wercker
   tasks:
     - name: Do tasks for each OS family
       include: "tasks/os/{{ ansible_os_family }}.yml"
