@@ -17,8 +17,9 @@ The contents it includes are  as follows.
 Supported image platforms are here.
 
 - Docker container(https://hub.docker.com/r/fgtatsuro/infra-bridgehead/)
-   - Debian
-   - Alpine Linux
+
+  - Debian
+  - Alpine Linux
 
 Requirements
 ------------
@@ -28,10 +29,13 @@ The dependencies on other softwares/librarys for this project.
 Supported build environments are here.
 
 - Ubuntu(>= 14.04)
-    - Python (2.7.x)
+
+  - Python (2.7.x)
+
 - OSX(>= 10.9.5)
-    - Python (2.7.x)
-    - Homebrew (>= 0.9.5)
+
+  - Python (2.7.x)
+  - Homebrew (>= 0.9.5)
 
 How to
 ------
