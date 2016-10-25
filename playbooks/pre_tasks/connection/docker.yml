@@ -42,7 +42,7 @@
 - block:
   # TODO: load script from Ansible project structure.(ex. files directory of role)
   - name: Copy install script for Python
-    command: "docker cp playbooks/scripts/install_python.sh {{ inventory_hostname }}:/tmp/install_python.sh"
+    command: "docker cp scripts/install_python.sh {{ inventory_hostname }}:/tmp/install_python.sh"
   - name: Install Python for task execution
     command: "docker exec {{ inventory_hostname }} /bin/sh /tmp/install_python.sh"
   - name: Delete install script for Python

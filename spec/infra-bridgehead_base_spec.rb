@@ -11,6 +11,12 @@ describe command('python --version') do
   its(:stderr) { should match /^Python 2\.7\.(9|1\d)/ }
 end
 
+describe file('/opt') do
+  it { should be_directory }
+  it { should be_owned_by 'root' }
+  it { should be_grouped_into 'root' }
+end
+
 describe command('ruby --version'), :if => ENV['TARGET_HOST'].include?('wercker') do
   its(:stdout) { should match /^ruby 2\./ }
 end
