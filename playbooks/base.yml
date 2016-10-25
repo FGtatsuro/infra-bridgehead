@@ -30,6 +30,13 @@
       include: "tasks/os/{{ ansible_os_family }}.yml"
       tags:
         - always
+    - name: Ensure /opt directory exists
+      file:
+        path: '/opt'
+        owner: 'root'
+        group: 'root'
+        state: 'directory'
+      become: yes
   post_tasks:
     - block:
       - name: Do post-tasks for each OS family
