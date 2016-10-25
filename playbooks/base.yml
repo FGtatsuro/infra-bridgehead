@@ -37,6 +37,8 @@
         group: 'root'
         state: 'directory'
       become: yes
+      tags:
+        - always
   post_tasks:
     - block:
       - name: Do post-tasks for each OS family
