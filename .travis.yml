@@ -103,7 +103,7 @@ script:
 after_script:
   - docker rm -f  ${CONTAINER_NAME}
 after_success:
-  - docker login -u="fgtatsuro" -e="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
+  - docker login -u="fgtatsuro" -p="$DOCKER_PASSWORD"
   - docker push ${COMMIT_IMAGE_NAME}
 
 # FYI: https://docs.travis-ci.com/user/encryption-keys
