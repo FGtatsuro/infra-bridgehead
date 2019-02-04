@@ -86,6 +86,22 @@ matrix:
           COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:alpine-3.3-wercker"
           TAGS="python,wercker"
           CONTAINER_NAME="container_forwercker"
+    - os: linux
+      dist: trusty
+      language: python
+      python: 2.7
+      services:
+        - docker
+      addons:
+        apt:
+          packages:
+          - python-pip
+      env:
+        - >+
+          BASE_IMAGE_NAME="ubuntu:18.04"
+          COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:ubuntu-18.04"
+          TAGS="python"
+          CONTAINER_NAME="container"
 
 sudo: required
 
