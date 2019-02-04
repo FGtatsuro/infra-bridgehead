@@ -2,7 +2,6 @@
 # For buildenv
 - src: FGtatsuro.virtualbox
 - src: FGtatsuro.vagrant
-- src: FGtatsuro.packer
 - src: FGtatsuro.docker_toolbox
 
 # For base
