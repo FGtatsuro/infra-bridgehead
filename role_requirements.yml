@@ -3,7 +3,7 @@
 - src: FGtatsuro.virtualbox
 - src: FGtatsuro.vagrant
 - src: FGtatsuro.packer
-- src: FGtatsuro.docker-toolbox
+- src: FGtatsuro.docker_toolbox
 
 # For base
 - src: FGtatsuro.python-requirements
