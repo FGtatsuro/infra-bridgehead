@@ -27,7 +27,10 @@ sudo: required
 
 install:
   - pip install -r requirements.txt
-  - ansible-galaxy install -r role_requirements.yml
+  - git clone https://github.com/FGtatsuro/ansible-python-requirements.git roles/FGtatsuro.python-requirements
+  - git clone https://github.com/FGtatsuro/ansible-ruby.git roles/FGtatsuro.ruby
+  - git clone https://github.com/FGtatsuro/ansible-ansible.git roles/FGtatsuro.ansible
+  - git clone https://github.com/FGtatsuro/ansible-java.git roles/FGtatsuro.java
   - bundle install
 script:
   - >+
