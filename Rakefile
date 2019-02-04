@@ -7,11 +7,6 @@ task :default => :spec
 namespace :spec do
   hosts = [
     {
-      :name     =>  'localhost',
-      :role     =>  'buildenv',
-      :backend  =>  'exec'
-    },
-    {
       :name     =>  'container',
       :role     =>  'base',
       :backend  =>  'docker'

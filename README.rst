@@ -31,19 +31,12 @@ Supported build environments are here.
 - Ubuntu(>= 14.04)
 
   - Python (2.7.x)
+  - Docker
 
 How to
 ------
 
-1. Setup build environment.
-
-.. code:: bash
-
-    $ pip install -r requirements.txt
-    $ ansible-galaxy install -r role_requirements.yml
-    $ ansible-playbook playbooks/buildenv.yml -i inventory/default -l buildenv
-
-2. Build base image.
+1. Build base image.
 
 .. code:: bash
 
@@ -56,7 +49,7 @@ How to
       --tags "python,wercker" \
       --extra-vars="docker_base_image=debian:jessie docker_commit_image=fgtatsuro/infra-bridgehead:debian-jessie-wercker"
 
-3. If you want to upload the image, you need to use the way for each image type.
+2. If you want to upload the image, you need to use the way for each image type.
 
 .. code:: bash
 

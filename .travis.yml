@@ -95,11 +95,6 @@ install:
   - bundle install
 script:
   - >+
-    ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost
-    --extra-vars="virtualbox_apt_repository='deb http://download.virtualbox.org/virtualbox/debian precise contrib'"
-    -vvvv
-  - bundle exec rake spec SPEC_TARGET=localhost
-  - >+
     ansible-playbook playbooks/base.yml -i inventory/default -l ${CONTAINER_NAME}
     --tags ${TAGS}
     --extra-vars="docker_base_image=${BASE_IMAGE_NAME} docker_commit_image=${COMMIT_IMAGE_NAME}"
