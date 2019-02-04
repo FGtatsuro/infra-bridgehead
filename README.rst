@@ -32,11 +32,6 @@ Supported build environments are here.
 
   - Python (2.7.x)
 
-- OSX(>= 10.9.5)
-
-  - Python (2.7.x)
-  - Homebrew (>= 0.9.5)
-
 How to
 ------
 

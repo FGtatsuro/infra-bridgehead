@@ -6,22 +6,6 @@ branches:
 # https://docs.travis-ci.com/user/multi-os/
 matrix:
   include:
-    - os: osx
-      language: generic
-      env:
-        - PYTHONPATH="/Library/Python/2.7/site-packages:$PYTHONPATH"
-      install:
-        - sudo pip install -U setuptools
-        - sudo pip install -r requirements.txt
-        - ansible-galaxy install -r role_requirements.yml
-        - bundle install
-      script:
-        - ansible-playbook playbooks/buildenv.yml -i tests/inventory -l localhost -vvvv
-        - bundle exec rake spec SPEC_TARGET=localhost
-      after_script:
-        - ;
-      after_success:
-        - ;
     - os: linux
       dist: trusty
       language: python
