@@ -1,6 +1,3 @@
-[buildenv]
-localhost       ansible_connection=local
-
 [containers]
 container
 container_forwercker

@@ -1,10 +1,4 @@
 ---
-# For buildenv
-- src: FGtatsuro.virtualbox
-- src: FGtatsuro.vagrant
-- src: FGtatsuro.packer
-- src: FGtatsuro.docker-toolbox
-
 # For base
 - src: FGtatsuro.python-requirements
 - src: FGtatsuro.ruby
