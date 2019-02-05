@@ -22,6 +22,7 @@ matrix:
           COMMIT_IMAGE_NAME="fgtatsuro/infra-bridgehead:ubuntu-18.04"
           TAGS="python"
           CONTAINER_NAME="container"
+          EXTRA_OPTIONS="-e DEBIAN_FRONTEND=noninteractive"
 
 sudo: required
 
@@ -36,7 +37,7 @@ script:
   - >+
     ansible-playbook playbooks/base.yml -i inventory/default -l ${CONTAINER_NAME}
     --tags ${TAGS}
-    --extra-vars="docker_base_image=${BASE_IMAGE_NAME} docker_commit_image=${COMMIT_IMAGE_NAME}"
+    --extra-vars="docker_base_image=${BASE_IMAGE_NAME} docker_commit_image=${COMMIT_IMAGE_NAME} docker_extra_options='${EXTRA_OPTIONS}'"
     -vvvv
   - bundle exec rake spec SPEC_TARGET=${CONTAINER_NAME}
 after_script:
