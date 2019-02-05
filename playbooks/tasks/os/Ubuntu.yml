@@ -1,0 +1,23 @@
+---
+# tasks on Ubuntu
+- set_fact:
+    apt_repositories:
+      - bionic main restricted
+      - bionic-updates main restricted
+      - bionic universe
+      - bionic-updates universe
+      - bionic multiverse
+      - bionic-updates multiverse
+      - bionic-backports main restricted universe multiverse
+- name: Remove archive.ubuntu.com
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu/ {{ item }}"
+    state: absent
+  with_items: "{{ apt_repositories }}"
+  become: yes
+- name: Add ftp.jaist.ac.jp
+  apt_repository:
+    repo: "deb http://ftp.jaist.ac.jp/pub/Linux/ubuntu/ {{ item }}"
+    state: present
+  with_items: "{{ apt_repositories }}"
+  become: yes
