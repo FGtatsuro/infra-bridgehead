@@ -25,7 +25,7 @@
     when: "('cmd' in docker_status_with_image) and docker_status_with_image.rc != 0"
 
   - name: Run target container
-    command: "docker run -it -d --name {{ inventory_hostname }} {{ docker_base_image }} /bin/sh"
+    command: "docker run {{ docker_extra_options|default('') }} -it -d --name {{ inventory_hostname }} {{ docker_base_image }} /bin/sh"
     when: "docker_status.rc != 0 or docker_status_with_image.rc != 0"
   # Andile Docker connection plugin requires Python exists on /usr/bin/python of container.
   - name: Check whether Python exists on /usr/bin/python
