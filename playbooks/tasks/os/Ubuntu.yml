@@ -9,6 +9,19 @@
       - bionic multiverse
       - bionic-updates multiverse
       - bionic-backports main restricted universe multiverse
+
+- block:
+  - name: Install tzdata
+    apt:
+      name: tzdata
+      update_cache: yes
+      cache_valid_time: 3600
+      install_recommends: no
+  - name: set timezone to Asia/Tokyo
+    timezone:
+      name: Asia/Tokyo
+  become: yes
+
 - name: Remove archive.ubuntu.com
   apt_repository:
     repo: "deb http://archive.ubuntu.com/ubuntu/ {{ item }}"
