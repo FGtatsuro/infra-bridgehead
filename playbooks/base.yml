@@ -27,8 +27,8 @@
         - wercker
   tasks:
     - block:
-      - name: Do tasks for each OS family
-        include: "tasks/os/{{ ansible_os_family }}.yml"
+      - name: Do tasks for each OS distribution
+        include: "tasks/os/{{ ansible_distribution }}.yml"
       tags:
         - always
     - name: Ensure /opt directory exists
