@@ -32,3 +32,25 @@ end
 describe command("ansible-playbook --version"), :if => ENV['TARGET_HOST'].include?('wercker') do
   its(:exit_status) { should eq 0 }
 end
+
+repos = [
+  "bionic main restricted",
+  "bionic-updates main restricted",
+  "bionic universe",
+  "bionic-updates universe",
+  "bionic multiverse",
+  "bionic-updates multiverse",
+  "bionic-backports main restricted universe multiverse",
+]
+
+describe command("cat /etc/apt/sources.list"), :if => os[:family] == 'ubuntu' do
+  repos.each {|r|
+    its(:stdout) { should_not match /#\s+#{Regexp.escape("deb http://archive.ubuntu.com/ubuntu/ #{r}")}/ }
+  }
+end
+
+describe command("cat /etc/apt/sources.list.d/ftp_jaist_ac_jp_pub_Linux_ubuntu.list"), :if => os[:family] == 'ubuntu' do
+  repos.each {|r|
+    its(:stdout) { should match /#{Regexp.escape("deb http://ftp.jaist.ac.jp/pub/Linux/ubuntu/ #{r}")}/ }
+  }
+end
